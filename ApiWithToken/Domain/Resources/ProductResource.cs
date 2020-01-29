@@ -9,14 +9,12 @@ namespace ApiWithToken.Domain.Resources
     public class ProductResource
     {
         [Required]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        [MaxLength(8)]
-        public string? Category { get; set; }
+        public string Category { get; set; }
 
         [Required]
-        [MinLength(3)]
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace ApiWithToken.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductResource productResource)
+        public async Task<IActionResult> AddProduct([FromBody]ProductResource productResource)
         {
             if (!ModelState.IsValid)
             {
@@ -66,7 +66,9 @@ namespace ApiWithToken.Controllers
             }
             else
             {
+                var price = Convert.ToDecimal(productResource.Price);
                 Product product = mapper.Map<ProductResource, Product>(productResource);
+                product.Price = price;
                 BaseResponse<Product> productResponse = await productService.Add(product);
 
                 if (productResponse.Success)
@@ -81,7 +83,7 @@ namespace ApiWithToken.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateProduct(ProductResource productResource, int id)
+        public async Task<IActionResult> UpdateProduct([FromBody]ProductResource productResource, int id)
         {
             if (!ModelState.IsValid)
             {

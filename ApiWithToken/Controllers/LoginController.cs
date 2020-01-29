@@ -8,7 +8,7 @@ using ApiWithToken.Security.Token;
 
 namespace ApiWithToken.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace ApiWithToken.Controllers
         }
 
         [HttpPost]
-        public IActionResult AccessToken(LoginResource loginResource)
+        public IActionResult AccessToken([FromBody]LoginResource loginResource)
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +41,7 @@ namespace ApiWithToken.Controllers
         }
 
         [HttpPost]
-        public IActionResult RefreshToken(TokenResource tokenResource)
+        public IActionResult RefreshToken([FromBody]TokenResource tokenResource)
         {
             BaseResponse<AccessToken> accessTokenResponse = authenticationService.CreateAccessTokenByRefreshToken(tokenResource.RefreshToken);
             if (accessTokenResponse.Success)
@@ -55,7 +55,7 @@ namespace ApiWithToken.Controllers
         }
 
         [HttpPost]
-        public IActionResult RemoveRefreshToken(TokenResource tokenResource)
+        public IActionResult RemoveRefreshToken([FromBody]TokenResource tokenResource)
         {
             BaseResponse<AccessToken> accessTokenResponse = authenticationService.RevokeRefreshToken(tokenResource.RefreshToken);
             if (accessTokenResponse.Success)

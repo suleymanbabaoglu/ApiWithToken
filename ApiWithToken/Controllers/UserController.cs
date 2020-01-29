@@ -29,6 +29,7 @@ namespace ApiWithToken.Controllers
             this.mapper = mapper;
         }
 
+        [Route("getList")]
         [HttpGet]
         public IActionResult GetUserList()
         {
@@ -77,7 +78,7 @@ namespace ApiWithToken.Controllers
             }
         }
 
-        [HttpGet("{refreshToken:string}")]
+        [HttpGet("{refreshToken}")]
         public IActionResult GetUserByRefreshToken(string refreshToken)
         {
             BaseResponse<User> userResponse = userService.GetUserWithRefreshToken(refreshToken);

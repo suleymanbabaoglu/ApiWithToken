@@ -40,6 +40,11 @@ namespace ApiWithToken
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<ITokenHandler, TokenHandler>();
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(ProductMapping));
             services.AddAutoMapper(typeof(UserMapping));
