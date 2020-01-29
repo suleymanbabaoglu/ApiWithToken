@@ -35,8 +35,9 @@ namespace ApiWithToken
 
             services.AddDbContext<ApiWithTokenDBContext>();
 
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped(typeof(IService<>), typeof(Service<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using ApiWithToken.Domain.Extensions;
 using ApiWithToken.Domain.Responses;
+using ApiWithToken.Security.Token;
 
 namespace ApiWithToken.Controllers
 {
@@ -27,14 +28,14 @@ namespace ApiWithToken.Controllers
             }
             else
             {
-                AccessTokenResponse accessTokenResponse = authenticationService.CreateAccessToken(loginResource.Email, loginResource.Password);
+                BaseResponse<AccessToken> accessTokenResponse = authenticationService.CreateAccessToken(loginResource.Email, loginResource.Password);
                 if (accessTokenResponse.Success)
                 {
-                    return Ok(accessTokenResponse.accessToken);
+                    return Ok(accessTokenResponse.Extra);
                 }
                 else
                 {
-                    return BadRequest(accessTokenResponse.Message);
+                    return BadRequest(accessTokenResponse.ErrorMessage);
                 }
             }
         }
@@ -42,28 +43,28 @@ namespace ApiWithToken.Controllers
         [HttpPost]
         public IActionResult RefreshToken(TokenResource tokenResource)
         {
-            AccessTokenResponse accessTokenResponse = authenticationService.CreateAccessTokenByRefreshToken(tokenResource.RefreshToken);
+            BaseResponse<AccessToken> accessTokenResponse = authenticationService.CreateAccessTokenByRefreshToken(tokenResource.RefreshToken);
             if (accessTokenResponse.Success)
             {
-                return Ok(accessTokenResponse.accessToken);
+                return Ok(accessTokenResponse.Extra);
             }
             else
             {
-                return BadRequest(accessTokenResponse.Message);
+                return BadRequest(accessTokenResponse.ErrorMessage);
             }
         }
 
         [HttpPost]
         public IActionResult RemoveRefreshToken(TokenResource tokenResource)
         {
-            AccessTokenResponse accessTokenResponse = authenticationService.RevokeRefreshToken(tokenResource.RefreshToken);
+            BaseResponse<AccessToken> accessTokenResponse = authenticationService.RevokeRefreshToken(tokenResource.RefreshToken);
             if (accessTokenResponse.Success)
             {
-                return Ok(accessTokenResponse.accessToken);
+                return Ok(accessTokenResponse.Extra);
             }
             else
             {
-                return BadRequest(accessTokenResponse.Message);
+                return BadRequest(accessTokenResponse.ErrorMessage);
             }
         }
     }

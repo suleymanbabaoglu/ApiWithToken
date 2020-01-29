@@ -32,15 +32,15 @@ namespace ApiWithToken.Controllers
         [HttpGet]
         public IActionResult GetUserList()
         {
-            UserListResponse userListResponse = userService.GetUserList();
+            BaseResponse<IEnumerable<User>> userListResponse = userService.GetUserList();
 
             if (userListResponse.Success)
             {
-                return Ok(userListResponse.userList);
+                return Ok(userListResponse.Extra);
             }
             else
             {
-                return BadRequest(userListResponse.Message);
+                return BadRequest(userListResponse.ErrorMessage);
             }
         }
 
@@ -51,43 +51,43 @@ namespace ApiWithToken.Controllers
 
             string userId = claims.Where(c => c.Type == ClaimTypes.NameIdentifier).First().Value;
 
-            UserResponse userResponse = userService.FindById(int.Parse(userId));
+            BaseResponse<User> userResponse = userService.FindById(int.Parse(userId));
 
             if (userResponse.Success)
             {
-                return Ok(userResponse.user);
+                return Ok(userResponse.Extra);
             }
             else
             {
-                return BadRequest(userResponse.Message);
+                return BadRequest(userResponse.ErrorMessage);
             }
         }
 
         [HttpGet("{id:int}")]
         public IActionResult GetUserById(int userId)
         {
-            UserResponse userResponse = userService.FindById(userId);
+            BaseResponse<User> userResponse = userService.FindById(userId);
             if (userResponse.Success)
             {
-                return Ok(userResponse.user);
+                return Ok(userResponse.Extra);
             }
             else
             {
-                return BadRequest(userResponse.Message);
+                return BadRequest(userResponse.ErrorMessage);
             }
         }
 
         [HttpGet("{refreshToken:string}")]
         public IActionResult GetUserByRefreshToken(string refreshToken)
         {
-            UserResponse userResponse = userService.GetUserWithRefreshToken(refreshToken);
+            BaseResponse<User> userResponse = userService.GetUserWithRefreshToken(refreshToken);
             if (userResponse.Success)
             {
-                return Ok(userResponse.user);
+                return Ok(userResponse.Extra);
             }
             else
             {
-                return BadRequest(userResponse.Message);
+                return BadRequest(userResponse.ErrorMessage);
             }
         }
 
@@ -101,15 +101,15 @@ namespace ApiWithToken.Controllers
             else
             {
                 User user = mapper.Map<UserResource, User>(userResource);
-                UserResponse userResponse = userService.AddUser(user);
+                BaseResponse<User> userResponse = userService.AddUser(user);
 
                 if (userResponse.Success)
                 {
-                    return Ok(userResponse.user);
+                    return Ok(userResponse.Extra);
                 }
                 else
                 {
-                    return BadRequest(userResponse.Message);
+                    return BadRequest(userResponse.ErrorMessage);
                 }
             }
         }

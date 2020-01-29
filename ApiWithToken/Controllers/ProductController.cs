@@ -19,10 +19,10 @@ namespace ApiWithToken.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductService productService;
+        private readonly IService<Product> productService;
         private readonly IMapper mapper;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public ProductController(IService<Product> productService, IMapper mapper)
         {
             this.productService = productService;
             this.mapper = mapper;
@@ -31,29 +31,29 @@ namespace ApiWithToken.Controllers
         [HttpGet]
         public async Task<IActionResult> GetList()
         {
-            ProductListResponse productListResponse = await productService.ListAsync();
+            BaseResponse<IEnumerable<Product>> productListResponse = await productService.GetWhere(x => x.Id > 0);
 
             if (productListResponse.Success)
             {
-                return Ok(productListResponse.productList);
+                return Ok(productListResponse.Extra);
             }
             else
             {
-                return BadRequest(productListResponse.Message);
+                return BadRequest(productListResponse.ErrorMessage);
             }
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetFindById(int id)
         {
-            ProductResponse productResponse = await productService.FindByIdAsync(id);
+            BaseResponse<Product> productResponse = await productService.GetById(id);
             if (productResponse.Success)
             {
-                return Ok(productResponse.product);
+                return Ok(productResponse.Extra);
             }
             else
             {
-                return BadRequest(productResponse.Message);
+                return BadRequest(productResponse.Extra);
             }
         }
 
@@ -67,15 +67,15 @@ namespace ApiWithToken.Controllers
             else
             {
                 Product product = mapper.Map<ProductResource, Product>(productResource);
-                ProductResponse productResponse = await productService.AddProduct(product);
+                BaseResponse<Product> productResponse = await productService.Add(product);
 
                 if (productResponse.Success)
                 {
-                    return Ok(productResponse.product);
+                    return Ok(productResponse.Extra);
                 }
                 else
                 {
-                    return BadRequest(productResponse.Message);
+                    return BadRequest(productResponse.ErrorMessage);
                 }
             }
         }
@@ -90,16 +90,17 @@ namespace ApiWithToken.Controllers
             else
             {
                 Product product = mapper.Map<ProductResource, Product>(productResource);
+                product.Id = id;
 
-                ProductResponse productResponse = await productService.UpdateProduct(product, id);
+                BaseResponse<Product> productResponse = await productService.Update(product);
 
                 if (productResponse.Success)
                 {
-                    return Ok(productResponse.product);
+                    return Ok(productResponse.Extra);
                 }
                 else
                 {
-                    return BadRequest(productResponse.Message);
+                    return BadRequest(productResponse.ErrorMessage);
                 }
             }
         }
@@ -107,15 +108,15 @@ namespace ApiWithToken.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveProduct(int id)
         {
-            ProductResponse productResponse = await productService.RemoveProduct(id);
+            BaseResponse<Product> productResponse = await productService.Delete(id);
 
             if (productResponse.Success)
             {
-                return Ok(productResponse.product);
+                return Ok(productResponse.Extra);
             }
             else
             {
-                return BadRequest(productResponse.Message);
+                return BadRequest(productResponse.ErrorMessage);
             }
         }
     }

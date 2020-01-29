@@ -21,97 +21,97 @@ namespace ApiWithToken.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public UserResponse AddUser(User user)
+        public BaseResponse<User> AddUser(User user)
         {
             try
             {
                 userRepository.AddUser(user);
                 unitOfWork.CompleteAsync();
-                return new UserResponse(user);
+                return new BaseResponse<User>(user);
             }
             catch (Exception ex)
             {
-                return new UserResponse($"Kullanıcı Oluşturulurken Bir Hata Oluştu::{ex.Message}");
+                return new BaseResponse<User>($"Kullanıcı Oluşturulurken Bir Hata Oluştu::{ex.Message}");
             }
         }
 
-        public UserResponse FindByEmailandPassword(string email, string password)
+        public BaseResponse<User> FindByEmailandPassword(string email, string password)
         {
             try
             {
                 var user = userRepository.FindByEmailandPassword(email, password);
                 if (user == null)
                 {
-                    return new UserResponse("Aradığınız Kullanıcı Bulunamadı !!!");
+                    return new BaseResponse<User>("Aradığınız Kullanıcı Bulunamadı !!!");
                 }
                 else
                 {
-                    return new UserResponse(user);
+                    return new BaseResponse<User>(user);
                 }
             }
             catch (Exception ex)
             {
-                return new UserResponse($"Kullanıcı Arama Sırasında Bir Hata Oluştu::{ex.Message}");
+                return new BaseResponse<User>($"Kullanıcı Arama Sırasında Bir Hata Oluştu::{ex.Message}");
             }
         }
 
-        public UserResponse FindById(int userId)
+        public BaseResponse<User> FindById(int userId)
         {
             try
             {
                 var user = userRepository.FindById(userId);
                 if (user == null)
                 {
-                    return new UserResponse("Aradığınız Kullanıcı Bulunamadı !!!");
+                    return new BaseResponse<User>("Aradığınız Kullanıcı Bulunamadı !!!");
                 }
                 else
                 {
-                    return new UserResponse(user);
+                    return new BaseResponse<User>(user);
                 }
             }
             catch (Exception ex)
             {
-                return new UserResponse($"Kullanıcı Arama Sırasında Bir Hata Oluştu::{ex.Message}");
+                return new BaseResponse<User>($"Kullanıcı Arama Sırasında Bir Hata Oluştu::{ex.Message}");
             }
         }
 
-        public UserListResponse GetUserList()
+        public BaseResponse<IEnumerable<User>> GetUserList()
         {
             try
             {
                 var userList = userRepository.GetList();
                 if (userList.Count() < 1)
                 {
-                    return new UserListResponse("Kullanıcı Bulunmamaktır...");
+                    return new BaseResponse<IEnumerable<User>>("Kullanıcı Bulunmamaktır...");
                 }
                 else
                 {
-                    return new UserListResponse(userList);
+                    return new BaseResponse<IEnumerable<User>>(userList);
                 }
             }
             catch (Exception ex)
             {
-                return new UserListResponse($"Kullanıcı Listesi Alınırken Bir Hata Oluştu::{ex.Message}");
+                return new BaseResponse<IEnumerable<User>>($"Kullanıcı Listesi Alınırken Bir Hata Oluştu::{ex.Message}");
             }
         }
 
-        public UserResponse GetUserWithRefreshToken(string refreshToken)
+        public BaseResponse<User> GetUserWithRefreshToken(string refreshToken)
         {
             try
             {
                 var user = userRepository.GetUserWithRefreshToken(refreshToken);
                 if (user == null)
                 {
-                    return new UserResponse("Aradığınız Kullanıcı Bulunamadı !!!");
+                    return new BaseResponse<User>("Aradığınız Kullanıcı Bulunamadı !!!");
                 }
                 else
                 {
-                    return new UserResponse(user);
+                    return new BaseResponse<User>(user);
                 }
             }
             catch (Exception ex)
             {
-                return new UserResponse($"Kullanıcı Arama Sırasında Bir Hata Oluştu::{ex.Message}");
+                return new BaseResponse<User>($"Kullanıcı Arama Sırasında Bir Hata Oluştu::{ex.Message}");
             }
         }
 

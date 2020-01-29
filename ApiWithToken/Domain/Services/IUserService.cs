@@ -9,17 +9,17 @@ namespace ApiWithToken.Domain.Services
 {
     public interface IUserService
     {
-        UserListResponse GetUserList();
+        BaseResponse<IEnumerable<User>> GetUserList();
 
-        UserResponse AddUser(User user);
+        BaseResponse<User> AddUser(User user);
 
-        UserResponse FindById(int userId);
+        BaseResponse<User> FindById(int userId);
 
-        UserResponse FindByEmailandPassword(string email, string password);
+        BaseResponse<User> FindByEmailandPassword(string email, string password);
 
         void SaveRefreshToken(int userId, string refreshToken);
 
-        UserResponse GetUserWithRefreshToken(string refreshToken);
+        BaseResponse<User> GetUserWithRefreshToken(string refreshToken);
 
         void RemoveRefreshToken(User user);
     }
