@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ApiWithToken.Domain.Extensions;
+﻿using ApiWithToken.Domain.Extensions;
 using ApiWithToken.Domain.Models;
 using ApiWithToken.Domain.Resources;
 using ApiWithToken.Domain.Responses;
 using ApiWithToken.Domain.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ApiWithToken.Controllers
 {

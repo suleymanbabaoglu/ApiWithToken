@@ -4,20 +4,60 @@ using ApiWithToken.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiWithToken.Migrations
 {
     [DbContext(typeof(ApiWithTokenDBContext))]
-    partial class ApiWithTokenDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200203073254_m4")]
+    partial class m4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ApiWithToken.Domain.Models.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "BURSA",
+                            Email = "suleymanbabaoglu@hotmail.com",
+                            Name = "Süleyman",
+                            Phone = "5467905747",
+                            Surname = "BABAOĞLU"
+                        });
+                });
 
             modelBuilder.Entity("ApiWithToken.Domain.Models.Product", b =>
                 {
@@ -29,6 +69,9 @@ namespace ApiWithToken.Migrations
                     b.Property<string>("Category")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -37,15 +80,18 @@ namespace ApiWithToken.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
                     b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Category = "admin",
-                            Name = "admin",
-                            Price = 0m
+                            Category = "Cat1",
+                            CustomerId = 1,
+                            Name = "Product1",
+                            Price = 10m
                         });
                 });
 
@@ -87,6 +133,15 @@ namespace ApiWithToken.Migrations
                             Password = "admin",
                             RefreshTokenEndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
+                });
+
+            modelBuilder.Entity("ApiWithToken.Domain.Models.Product", b =>
+                {
+                    b.HasOne("ApiWithToken.Domain.Models.Customer", "Customer")
+                        .WithMany("Products")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

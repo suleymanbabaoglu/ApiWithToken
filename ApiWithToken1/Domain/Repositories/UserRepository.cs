@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 
 namespace ApiWithToken.Domain.Repositories
 {
-    public class UserRepository : BaseRepository, IUserRepository
+    public class UserRepository : IUserRepository
     {
+        protected readonly ApiWithTokenDBContext context;
         private readonly TokenOptions tokenOptions;
 
-        public UserRepository(ApiWithTokenDBContext context, IOptions<TokenOptions> tokenOptions) : base(context)
+        public UserRepository(ApiWithTokenDBContext context, IOptions<TokenOptions> tokenOptions)
         {
             this.tokenOptions = tokenOptions.Value;
+            this.context = context;
         }
 
         public void AddUser(User user)
